@@ -9,12 +9,13 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class BinaryPrepwork {
-    private static final String test = "I'm a wanderer";
-    private static final String mask = "I'm a bonkerer";
-    private static final byte[] mass = {0,0,0,0,0,0,21,14,0,15,0,0,0,0};
+//    private static final String test = "I'm a wanderer";
+//    private static final String mask = "I'm a bonkerer";
+//    private static final byte[] mass = {0,0,0,0,0,0,21,14,0,15,0,0,0,0};
+    private static final byte __BITMASK = 0b00011000;
 
     private static final String __ASCII_NEW =
-            "                              +                                                     "+
+            "                               +                                                     "+
             "                             :$$                                                    "+
             "                        seeee$$$Neeee                                               "+
             "                          R$$$F$$$$F                                                "+
@@ -45,22 +46,26 @@ public class BinaryPrepwork {
             "              J/~       *k$$$~  /~*$**o$o$$P        '*oo.                           "+
             "             P           #        /~$$$#*o          >  '####*oooo                   "+
             "          .e/~            :e$$e.  F3  ^/~$P  :$$s :e@$ee        s/~                 "+
-            "        $P` M7>    $P$$k /~$/~?$3 @/~#}      }jl8jy }h8y       8v                   "+
-            "     q8}   |qjl   jyh8B6  }u8wl8   }n      y8}  n  wt8}mjl8                       "+
-            " aU84     k   yu   lkqjp[8~w8  a  y|8     B          8}p                            "+
-            " l8vW      6  |vY    6pl~t}o   l6plv}n}  t}6pl           v}l6p                      "+
-            "    lvqv6lpq}6plv}n}k6pl`        qk6p      l~q~    6pljm       w~6|jq              "+
-            "       pl6    |v w{} k            6lk     jq~  6k   }nw|8}             tljml8woL6   "+
-            "      kv      }p8p{       v    } j^8}       }j   pL6k| jq                z          "+
-            "    8  v     q tty     {8jmw  ^6kvq     j8v}|       tw8             }nq          "+
-            "  ^6  vqay    t5y5}       k}}    8`q      K6vqu     u   qok5y5kvyok8v}           "+
-            "n}     K6v       qstq  u5y 5k|   qy         u8lp        q]6v                    q"+
-            "{vy|8k} q        |yt8}v  q          V6vq           hy    }t5y5k|jwt                "+
-            "     8v}L6vqhqh8kj      }        hq   h          8 v}n}     t]     6v             "+
-            "                             quumj|8kj}                                             "+
-            "                             u        u                                             "+
-            "                             mj|8}nt}oL                                             ";
+            "        $P` M7>    $P$$k /~$/~?$3 @/~#|      |ik7ix |g7x       7u                   "+
+            "     p7|   ~{pik   ixg7A5  |t7vk7   |m      x~7|  m  vs7|lik7                       "+
+            " `T73     j   xt   kjpioZ7}v7  `  x{7     A          7|o                            "+
+            " k7uV      5  {uX    5ok}s|n   k5oku|m|  s|5ok           u|k5o                      "+
+            "    kupu5ko~p|5oku|m|j5ok_        pj5o      k}p}    5okil       v}5{ip              "+
+            "       ok5    {u vz| j            5kj     ip}  5j   |mv{7|             skilk7vnK5   "+
+            "      ju      |o7oz       u    | i]7|       |i   oK5j{ ip                y          "+
+            "    7~  u     p ssx     z7ilv  ]5j~up     i7u|{       sv~7             |mp          "+
+            "  ]5  ~up`x    s4x4|       j||    ~7_p      J5~upt     t   pnj4x4juxnj7u|           "+
+            "m|     J5~u       prsp  t4x 4j{   px         t7ko      ~  p\\5~u                    "+
+            "  pzux{7j| p        {xs7|u  p          U5~up           gx    |s4x4j{ivs             "+
+            "        7u|K5~upgpg7ji      |        gp   g          7 u|m|     s\\     5~u         "+
+            "                                   pttli{7ji|                                       "+
+            "                                   t        t                                       "+
+            "                                   li{7|ms|nK                                       #";
 
+    /**
+     * This is a mask for the Christmas tree shape. It does not matter what the content is.
+     * Only blank or non blank.
+     */
     private static final String __ASCII_TREE =
             "                               +                                                    " +
             "                              :$$                                                   " +
@@ -133,7 +138,7 @@ public class BinaryPrepwork {
         System.out.println(__ASCII_TREE.length());
 
         String noSpaces = __ASCII_TREE.replaceAll(" ", "");
-        System.out.println(noSpaces.length());
+//        System.out.println(noSpaces.length());
 
         StringBuilder sb = new StringBuilder();
 /*
@@ -158,13 +163,13 @@ public class BinaryPrepwork {
         for (int i = 0; i < _DAYS.length(); i++) {
             byte b = _DAYS.getBytes()[i];
 //            int lMask  = b << 1;
-            int lMask  = b ^ 0b00011000;
+            int lMask  = ( b ^ __BITMASK ) - 2;
 //            int rMask  = lMask >> 1;
-            int rMask  = lMask ^ 0b00011000;
+            int rMask  = (lMask+2) ^ __BITMASK;
 //            byte lMask  = (byte) (b & 0b10101111);
 //            byte rMask = (byte) (b & 0b01011111);
 
-            byte recompose = (byte)(lMask | rMask);
+            byte recompose = (byte)( ++lMask | rMask);
             left.append((char)lMask);
             right.append((char)rMask);
 
@@ -202,29 +207,43 @@ public class BinaryPrepwork {
 
         }
 
-        System.out.println(sb.reverse().toString());
+//        System.out.println(sb.reverse().toString());
 
     }
 
+    /**
+     * Places the characters of a string onto a template
+     * @param wrappee the string to be wrapped around the ASCII art template
+     * @return a template looking string with extra spaces so that it resembles ASCII art
+     */
     private static String wrapper(String wrappee){
         StringBuilder sb = new StringBuilder(__ASCII_TREE.length());
-        String newTree = String.copyValueOf(__ASCII_TREE.toCharArray());
+//        String newTree = String.copyValueOf(__ASCII_TREE.toCharArray());
+        int maxCharValue = 0; int minCharValue = Integer.MAX_VALUE;
         int j = 0;
         for (int i =  __ASCII_TREE.length() - 1; i >=0; i--) {
             char c = __ASCII_TREE.charAt(i);
 
+//            char n = (char)((int)wrappee.charAt( j ++ )+1);
             sb.append(( c != ' ' && j < wrappee.length()) ? wrappee.charAt( j ++ ) : c );
+            if ( j < wrappee.length() ){
+                maxCharValue = Math.max ( (int)wrappee.charAt( j ), maxCharValue);
+                minCharValue = Math.min ( (int)wrappee.charAt( j ), minCharValue);
+            }
 
         }
-        return ssplit(sb.reverse().toString());
+        System.out.format("Max ASCII code found: %s\t", maxCharValue);
+        System.out.format("Mim ASCII code found: %s\n", minCharValue);
+        return ssplit(sb.reverse().toString().replaceAll("\\\\", "\\\\\\\\\\\\\\\\"));
 
     }
 
     private static String ssplit(String s){
         StringBuilder sb = new StringBuilder();
+        sb.append('\"');
         for (int i = 0; i < s.length(); i++) {
             sb.append(s.charAt(i));
-            if ( i % 84 == 0 ) {
+            if ( i > 0 && i % 84 == 0 ) {
                 sb.append('\"');
                 sb.append('+');
                 sb.append('\n');
@@ -242,7 +261,7 @@ public class BinaryPrepwork {
         String s = new StringBuilder(__ASCII_NEW.replaceAll(" ", "")).reverse().toString();
         for (int i = 0 ; i < 306; i++)
             try {
-                sb.append((char)(( s.getBytes("US-ASCII")[i] ^ 0b00011000) ));
+                sb.append((char)(( (s.getBytes("US-ASCII")[i]+1) ^ __BITMASK) ));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
